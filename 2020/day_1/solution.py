@@ -1,13 +1,13 @@
 import time
 
-def getNums() -> set: 
+def get_nums() -> set: 
     with open("2020/day_1/input.txt", "r") as f: 
         nums = {int(i) for i in f.readlines()}
     return nums
 
 
 def part_1() -> int:
-    nums = getNums()
+    nums = get_nums()
     for num in nums: 
         if 2020 - num in nums: 
             return (2020-num)*num
@@ -15,7 +15,7 @@ def part_1() -> int:
 
 
 def part_2() -> int:  
-    nums = getNums()
+    nums = get_nums()
     for num1 in nums: 
         for num2 in nums: 
             if 2020 - (num1 + num2) in nums: 
