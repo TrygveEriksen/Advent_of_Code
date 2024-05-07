@@ -33,45 +33,42 @@ def shuffle_2(positions):
     c = [[0]*len(positions[0]) for i in range(len(positions))]
     for i in range(len(positions)): 
         for j in range(len(positions[0])):
-            try: 
-                for k in range(1, len(positions[0])): 
-                    if j + k == len(positions[0]): break
-                    if positions[i][j+k] == "L": 
-                        c[i][j+k] += positions[i][j] == "#"
-                        break
-                    if positions[i][j+k] == "#": 
-                        c[i][j] += 1 
-                        c[i][j+k] += positions[i][j] == "#"
-                        break
-                for k in range(1, len(positions)): 
-                    if i + k == len(positions): break
-                    if positions[i+k][j] == "L":
-                        c[i+k][j] += positions[i][j] == "#"
-                        break
-                    if positions[i+k][j] == "#": 
-                        c[i][j] += 1 
-                        c[i+k][j] += positions[i][j] == "#"
-                        break
-                for k in range(1, len(positions)): 
-                    if j + k == len(positions[0]) or i + k == len(positions): break
-                    if positions[i+k][j+k] == "L": 
-                        c[i+k][j+k] += positions[i][j] == "#"
-                        break
-                    if positions[i+k][j+k] == "#": 
-                        c[i][j] += 1 
-                        c[i+k][j+k] += positions[i][j] == "#"
-                        break
-                for k in range(1, len(positions)): 
-                    if i + k == len(positions) or j - k < 0: break
-                    if positions[i+k][j-k] == "L": 
-                        c[i+k][j-k] += positions[i][j] == "#"
-                        break
-                    if positions[i+k][j-k] == "#": 
-                        c[i][j] += 1 
-                        c[i+k][j-k] += positions[i][j] == "#"
-                        break    
-            except: 
-                print("") 
+            for k in range(1, len(positions[0])): 
+                if j + k == len(positions[0]): break
+                if positions[i][j+k] == "L": 
+                    c[i][j+k] += positions[i][j] == "#"
+                    break
+                if positions[i][j+k] == "#": 
+                    c[i][j] += 1 
+                    c[i][j+k] += positions[i][j] == "#"
+                    break
+            for k in range(1, len(positions)): 
+                if i + k == len(positions): break
+                if positions[i+k][j] == "L":
+                    c[i+k][j] += positions[i][j] == "#"
+                    break
+                if positions[i+k][j] == "#": 
+                    c[i][j] += 1 
+                    c[i+k][j] += positions[i][j] == "#"
+                    break
+            for k in range(1, len(positions)): 
+                if j + k == len(positions[0]) or i + k == len(positions): break
+                if positions[i+k][j+k] == "L": 
+                    c[i+k][j+k] += positions[i][j] == "#"
+                    break
+                if positions[i+k][j+k] == "#": 
+                    c[i][j] += 1 
+                    c[i+k][j+k] += positions[i][j] == "#"
+                    break
+            for k in range(1, len(positions)): 
+                if i + k == len(positions) or j - k < 0: break
+                if positions[i+k][j-k] == "L": 
+                    c[i+k][j-k] += positions[i][j] == "#"
+                    break
+                if positions[i+k][j-k] == "#": 
+                    c[i][j] += 1 
+                    c[i+k][j-k] += positions[i][j] == "#"
+                    break    
 
             
     for i in range(len(positions)): 
