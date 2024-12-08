@@ -1,5 +1,5 @@
 def part_1(): 
-	with open("2015/day_x/input.txt", "r") as f: 
+	with open("2024/day_2/input.txt", "r") as f: 
 		ints = list(list(map(int, line.strip().split()))for line in f.readlines())
 	c=0
 	for i in ints: 
