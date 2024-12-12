@@ -3,12 +3,10 @@ def part_2():
     with open("2024/day_12/input.txt", "r") as f: 
         garden = [line.strip() for line in f.readlines()]
     directions = [(0, 1),(-1,0),(0,-1),(1,0)]
-    seeds = [(i, j) for i in range(len(garden))for j in range(len(garden[i]))]
+    seeds = set((i, j) for i in range(len(garden))for j in range(len(garden[i])))
     s = 0
-    
-    def flood(seed, walls:set): 
-        if seed not in seeds: 
-            return {}
+
+    def flood(seed, walls:set):
         walls.add(seed)
         seeds.remove(seed)
         for d in directions: 
@@ -17,7 +15,8 @@ def part_2():
         return  walls
 
     while len(seeds): 
-        seed = seeds[-1]
+        seed = seeds.pop()
+        seeds.add(seed)
         area = flood(seed, set())
         num_walls = 0
         x_min, x_max, y_min, y_max = min(x[0] for x in area), max(x[0] for x in area), min(x[1] for x in area), max(x[1] for x in area)
@@ -53,7 +52,7 @@ def part_2():
                 else: 
                     right_flag = False
                 x += 1
-        print(f"{garden[seed[0]][seed[1]]}: {len(area)} * {num_walls} = {len(area)*num_walls}")
+        print(f"{len(area)} * {num_walls} = {len(area)*num_walls}")
         s+= len(area)*num_walls
     print(s)
 
