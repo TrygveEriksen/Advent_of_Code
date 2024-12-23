@@ -1,31 +1,27 @@
-from functools import cache
 import sys
 
 sys.setrecursionlimit(1000000)
 
-def next_secret(num, d):
-    if d == 0: 
-        return []
-    ret = [num]
-    new = num * 64 
-    num = new ^ num
-    num %= 16777216
+def mix(n1, n2): 
+    return n1 ^n2
 
-    new = num // 32
-    num = new ^ num
-    num %= 16777216
+def prune(num): 
+    return num % 16777216
 
-    new = num * 2048
-    num = new ^ num
-    num %= 16777216
-    return ret + next_secret(num, d-1)
+def next_secret(num):
+    num = prune(mix(num, num *64))
+    num = prune(mix(num, num//32))
+    num = prune(mix(num, num*2048))
+    return num
 
 def part_1(): 
     data = [*map(int, open("2024/day_22/input.txt", "r").read().split("\n"))]
     prices = []
     changes = []
-    for d in data: 
-        res = next_secret(d, 2001)
+    for d in data:
+        res = [d] 
+        for _ in range(2001): 
+            res.append(next_secret(res[-1]))
         res = [r%10 for r in res]
         prices.append(res)
         changes.append([res[i+1]-res[i] for i in range(len(res)-1)])  
