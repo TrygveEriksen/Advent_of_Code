@@ -1,3 +1,4 @@
+
 def evaluate(nums, ops):
     result = nums[0]
     for i in range(len(ops)):
@@ -9,6 +10,7 @@ def evaluate(nums, ops):
             case _ :
                 result = int(str(result) + str(nums[i+1]))
     return result
+
 
 def can_match(target, nums):
     if len(nums) == 1:

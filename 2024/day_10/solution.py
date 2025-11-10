@@ -19,5 +19,4 @@ def part_1():
                     else: 
                         starts.append((idx+d[0], jdx+d[1], start+1, origin))
     print(len(reached))
-
 part_1()

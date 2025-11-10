@@ -1,46 +1,78 @@
-class Bot: 
-	def __init__(self, id): 
-		self.id = id
-		self.nums=[]
-		self.gives=[]
-	
-	def recieve(self, num): 
-		self.nums.append(num)
-		if len(self.nums) == 2:
-			if sorted(int(i) for i in self.nums) == sorted([17, 61]):
-				print(self.id)
-				exit()
-			else: 
-				self.gives[0].recieve(str(min(int(i) for i in self.nums)))
-				self.gives[1].recieve(str(max(int(i) for i in self.nums)))
-	
-
 bots = {}
 
-with open("2016/day_10/input.txt", "r") as f: 
-		lines = f.readlines()
+class Bot: 
+    def __init__(self, num): 
+        self.num = num
+        self.vals = []
+        self.to = ["", ""]
+        self.hasgiven = False
 
-todo = []
+    def give(self):
+        self.hasgiven = True
+        if self.num[:3] == "out" or self.to == ["", ""]: 
+            return
+        global bots
+        print("Giving in bot: " + self.num)
+        b0 = bots.get(self.to[0])    
+        b0.vals.append(self.vals[0])
+        if len(b0.vals) == 2 and not b0.hasgiven: 
+            b0.vals.sort()
+            b0.give()
 
-for line in lines: 
-	line=line.strip()
-	l = line.split(" ")
-	if l[0] == "value": 
-		todo.append(l)
-	elif l[0] == "bot": 
-		n = l[1]
-		if l[6] not in bots: 
-			bots[l[6]] = Bot(l[6])
-		if l[11] not in bots: 
-			bots[l[11]] = Bot(l[11])
-		if n not in bots: 
-			bots[n] = Bot(n)
-			
-		bots[n].gives = [bots[l[6]], bots[l[11]]]
-	
-for l in todo: 
-	val = l[1]
-	n = l[5]
-	bots[n].recieve(val)
-	
-	
+        b1 = bots.get(self.to[1])
+        b1.vals.append(self.vals[1])
+        if len(b1.vals) == 2 and not b1.hasgiven: 
+            b1.vals.sort()
+            b1.give()
+
+def part_1(): 
+    part_1.has_been_called = True
+    with open("2016/day_10/input.txt") as f: 
+        lines = [line.strip().split() for line in f.readlines()]
+    for line in lines: 
+        if line[0] == "value": 
+            num = line[-2] + line[-1]
+            val = int(line[1])
+            if num not in bots: 
+                b0 = Bot(num)
+                bots[num] = b0
+            else: 
+                b0 = bots[num]
+            b0.vals.append(val)
+            bots[num] = b0
+        if line[0] == "bot": 
+            num_from = line[0] + line[1]
+            low = line[5] + line[6]
+            high = line[-2] + line[-1]
+            if num_from not in bots: 
+                b0 = Bot(num_from)
+            else: 
+                b0 = bots[num_from]
+            bots[num_from] = b0 
+            b0.to = [low, high]
+            if low not in bots: 
+                bots[low] = Bot(low)
+            if high not in bots: 
+                bots[high] = Bot(high)
+    change = True
+    #breakpoint()
+    while change:
+        print("New round")
+        change = False
+        for num, bot in sorted(bots.items()):
+            print(f"{bot.num} -> {bot.to}, {bot.vals}")
+            if len(bot.vals) == 2 and not bot.hasgiven: 
+                bot.give()
+                change = True
+    for bot in bots.values():
+        if bot.vals == [17, 61]:
+            print("yey lets go")
+            print(bot.num)
+
+def part_2():
+    assert part_1.has_been_called, "oh no so bad!"
+    print(bots['output0'].vals[0]*bots['output1'].vals[0]*bots['output2'].vals[0])
+
+part_1.has_been_called = False
+part_1()        
+part_2()
